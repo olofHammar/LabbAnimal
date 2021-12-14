@@ -7,8 +7,10 @@
 
   <ItemGroup>
     <None Remove="Entities\" />
+    <None Remove="Repo\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
+    <Folder Include="Repo\" />
   </ItemGroup>
 </Project>
