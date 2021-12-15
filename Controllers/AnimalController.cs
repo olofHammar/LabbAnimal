@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using LabbAnimal.DTOs;
 using LabbAnimal.Entities;
 using LabbAnimal.Repo;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +22,16 @@ namespace LabbAnimal.Controllers
         [HttpGet("")]
         public IActionResult GetAnimals()
         {
-            List<Animal> animals = _repo.getAll();
+            var animals = _repo
+                .getAll()
+                .Select(a => new AnimalDTO
+                {
+                    Id = a.Id,
+                    Type = a.Type,
+                    Name = a.Name,
+                })
+                .OrderBy(x => x.Type);
+
             return Ok(animals);
         }
 
@@ -34,18 +45,21 @@ namespace LabbAnimal.Controllers
                 return NotFound("Couldn't find animal with id " + id + ".");
             }
 
-            return Ok(animal);
+            AnimalDTO animalDTO = AnimalDTO.MapAnimalToAnimalDTO(animal);
+
+            return Ok(animalDTO);
         }
 
         [HttpPost("")]
-        public CreatedAtActionResult CreateAnimal([FromBody]Animal animal)
+        public IActionResult CreateAnimal([FromBody]CreateAnimalDTO createAnimalDTO)
         {
-            Animal createdAnimal = _repo.CreateAnimal(animal);
+            Animal createdAnimal = _repo.CreateAnimal(createAnimalDTO);
+            AnimalDTO animalDTO = AnimalDTO.MapAnimalToAnimalDTO(createdAnimal);
 
             return CreatedAtAction(
                 nameof(GetAnimalById),
-                new { id = createdAnimal.Id },
-                createdAnimal);
+                new { id = animalDTO.Id },
+                animalDTO);
         }
 
         [HttpPut("")]
@@ -58,15 +72,24 @@ namespace LabbAnimal.Controllers
                 return NotFound("Failed to update animal.");
             }
 
-            return Ok(updatedAnimal);
+            AnimalDTO animalDTO = AnimalDTO.MapAnimalToAnimalDTO(updatedAnimal);
+
+            return Ok(animalDTO);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteAnimal(int id)
         {
+            Animal animal = _repo.GetById(id);
+
+            if (animal == null)
+            {
+                return NotFound("Couldn't find animal with id " + id + ".");
+            }
+
             _repo.DeleteAnimal(id);
 
-            return NoContent();
+            return Ok("Animal with id " + id + " succefully deleted.");
         }
     }
 }

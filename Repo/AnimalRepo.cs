@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LabbAnimal.DTOs;
 using LabbAnimal.Entities;
 
 namespace LabbAnimal.Repo
@@ -26,10 +27,14 @@ namespace LabbAnimal.Repo
             return animal;
         }
 
-        public Animal CreateAnimal(Animal animal)
+        public Animal CreateAnimal(CreateAnimalDTO animalDTO)
         {
+            Animal animal = new Animal();
+
             animal.Id = _animals.Max(x => x.Id) + 1;
             animal.Created = DateTime.Now;
+            animal.Type = animalDTO.Type;
+            animal.Name = animalDTO.Name;
 
             _animals.Add(animal);
 
@@ -40,7 +45,7 @@ namespace LabbAnimal.Repo
         {
             Animal existingAnimal = _animals.FirstOrDefault(x => x.Id == animal.Id);
 
-            if(existingAnimal != null)
+            if (existingAnimal != null)
             {
                 existingAnimal.Type = animal.Type;
                 existingAnimal.Name = animal.Name;
@@ -95,6 +100,5 @@ namespace LabbAnimal.Repo
                 },
             };
         }
-
     }
 }

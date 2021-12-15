@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LabbAnimal.DTOs;
 using LabbAnimal.Entities;
 
 namespace LabbAnimal.Repo
@@ -10,7 +11,7 @@ namespace LabbAnimal.Repo
 
         Animal GetById(int Id);
 
-        Animal CreateAnimal(Animal animal);
+        Animal CreateAnimal(CreateAnimalDTO animalDTO);
 
         Animal UpdateAnimal(Animal animal);
 
