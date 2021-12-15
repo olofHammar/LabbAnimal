@@ -1,6 +1,6 @@
 # LabbAnimal
 Laboration 1, Backendutveckling C#. <br/>
-Av Olof Hammar. <br/>
+By: Olof Hammar. <br/>
 
 Get all animals:
 ![GetAllAnimals](https://user-images.githubusercontent.com/70969820/146187543-71e1b85b-ec54-4159-bc3d-dfa9b224777f.png)
