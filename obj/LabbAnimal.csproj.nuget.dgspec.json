@@ -14,7 +14,7 @@
         "outputPath": "/Users/olofhammar/Projects/LabbAnimal/LabbAnimal/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/olofhammar/.config/NuGet/NuGet.Config"
+          "/Users/olofhammar/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"

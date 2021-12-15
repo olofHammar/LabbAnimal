@@ -17,18 +17,56 @@ namespace LabbAnimal.Controllers
             _repo = repo;
         }
 
-        [HttpGet]
-        [Route("")]
-        public List<Animal> GetAnimals()
+        [HttpGet("")]
+        public IActionResult GetAnimals()
         {
             List<Animal> animals = _repo.getAll();
-            return animals;
+            return Ok(animals);
         }
 
         [HttpGet("{id}")]
-        public Animal GetAnimalById(int id)
+        public IActionResult GetAnimalById(int id)
         {
-            return _repo.GetById(id);
+            Animal animal = _repo.GetById(id);
+
+            if (animal == null)
+            {
+                return NotFound("Couldn't find animal with id " + id + ".");
+            }
+
+            return Ok(animal);
+        }
+
+        [HttpPost("")]
+        public CreatedAtActionResult CreateAnimal([FromBody]Animal animal)
+        {
+            Animal createdAnimal = _repo.CreateAnimal(animal);
+
+            return CreatedAtAction(
+                nameof(GetAnimalById),
+                new { id = createdAnimal.Id },
+                createdAnimal);
+        }
+
+        [HttpPut("")]
+        public IActionResult UpdateAnimal([FromBody]Animal animal)
+        {
+            Animal updatedAnimal = _repo.UpdateAnimal(animal);
+
+            if (updatedAnimal == null)
+            {
+                return NotFound("Failed to update animal.");
+            }
+
+            return Ok(updatedAnimal);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAnimal(int id)
+        {
+            _repo.DeleteAnimal(id);
+
+            return NoContent();
         }
     }
 }
